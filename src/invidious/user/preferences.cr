@@ -74,7 +74,7 @@ struct Preferences
         else
           result
         end
-      rescue ex
+      rescue
         if value.read_bool
           "dark"
         else
@@ -200,7 +200,7 @@ struct Preferences
         value.read_array do
           result << HTML.escape(value.read_string[0, 100])
         end
-      rescue ex
+      rescue
         result = [HTML.escape(value.read_string[0, 100]), ""]
       end
 
@@ -229,7 +229,7 @@ struct Preferences
 
           result << HTML.escape(item.value[0, 100])
         end
-      rescue ex
+      rescue
         if node.is_a?(YAML::Nodes::Scalar)
           result = [HTML.escape(node.value[0, 100]), ""]
         else
