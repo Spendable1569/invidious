@@ -51,8 +51,8 @@
     "Import NewPipe subscriptions (.json)": "Import NewPipe subscriptions (.json)",
     "Import NewPipe data (.zip)": "Import NewPipe data (.zip)",
     "Export": "Export",
-    "Export subscriptions as OPML": "Export subscriptions as OPML",
-    "Export subscriptions as OPML (for NewPipe & FreeTube)": "Export subscriptions as OPML (for NewPipe & FreeTube)",
+    "Export subscriptions as OPML (for FreeTube)": "Export subscriptions as OPML (for FreeTube)",
+    "Export subscriptions as JSON (for NewPipe)": "Export subscriptions as JSON (for NewPipe)",
     "Export data as JSON": "Export Invidious data as JSON",
     "Delete account?": "Delete account?",
     "History": "History",
@@ -510,5 +510,6 @@
     "timeline_parse_error_placeholder_heading": "Unable to parse item",
     "timeline_parse_error_placeholder_message": "Invidious encountered an error while trying to parse this item. For more information see below:",
     "timeline_parse_error_show_technical_details": "Show technical details",
-    "dmca_content": "This video cannot be downloaded on this instance due to a DMCA/copyright infringement letter sent to the instance administrator."
+    "dmca_content": "This video cannot be downloaded on this instance due to a DMCA/copyright infringement letter sent to the instance administrator.",
+    "video_details_ai_made": "AI Made video?:"
 }

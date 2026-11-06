@@ -87,7 +87,7 @@ module Invidious::Videos::Parser
 
       # Although technically not a call to /videoplayback the fact that YouTube is returning the
       # wrong video means that we should count it as a failure.
-      Helpers.get_playback_statistic["totalRequests"] += 1
+      Invidious::Helpers.get_playback_statistic["totalRequests"] += 1
 
       return {
         "version" => JSON::Any.new(Video::SCHEMA_VERSION.to_i64),
@@ -233,6 +233,10 @@ module Invidious::Videos::Parser
 
     keywords = video_details["keywords"]?
       .try &.as_a.map &.as_s || [] of String
+
+    ai_made = video_primary_renderer
+      .try &.dig?("badges")
+        .try { |badges| badges.as_a.any? { |badge| badge.dig?("metadataBadgeRenderer", "label").try(&.as_s) == "AI" } } || false
 
     # Related videos
 
@@ -454,6 +458,7 @@ module Invidious::Videos::Parser
       "authorThumbnail" => JSON::Any.new(author_thumbnail.try &.as_s || ""),
       "authorVerified"  => JSON::Any.new(author_verified || false),
       "subCountText"    => JSON::Any.new(subs_text || "-"),
+      "aiMade"          => JSON::Any.new(ai_made),
     }
 
     return params
