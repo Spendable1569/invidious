@@ -715,6 +715,13 @@ private module Parsers
         # Contains the views of the video and the published time of the video.
         if (metadata_rows = metadata.dig("metadata", "contentMetadataViewModel", "metadataRows").try &.as_a)
           metadata_rows.each do |row|
+            # To filter members only videos, they do not have metadataParts available.
+            # This videos are not hidden from the channel videos list.
+            badges = row.dig?("badges").try &.as_a
+            if badges.try &.any? { |item| item.dig?("badgeViewModel", "badgeStyle").try &.as_s == "BADGE_MEMBERS_ONLY" }
+              next
+            end
+
             metadata_parts = row.dig("metadataParts").try &.as_a
 
             if view_count_text.nil?
@@ -801,7 +808,13 @@ private module Parsers
           .compact_map(&.dig?("thumbnailOverlayBadgeViewModel", "thumbnailBadges").try &.as_a)
           .flatten
           .find(nil, &.dig?("thumbnailBadgeViewModel", "text").try do |node|
-            {"episodes", "videos", "lessons"}.any? { |str| node.as_s.ends_with?(str) }
+            # Playlists that contain MORE THAN ONE video, use "videos" for their video count.
+            # "text" => "8 videos"
+            #
+            # Playlists that contain ONLY ONE video, use "video" for their video count.
+            # "text" => "1 video"
+            #
+            {"episodes", "videos", "video", "lessons"}.any? { |str| node.as_s.ends_with?(str) }
           end)
           .try &.dig("thumbnailBadgeViewModel", "text").as_s.to_i(strict: false)
 
